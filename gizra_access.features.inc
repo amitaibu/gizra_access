@@ -17,3 +17,12 @@ function gizra_access_flag_default_flags() {
   $args = func_get_args();
   return call_user_func_array('_gizra_access_flag_default_flags', $args);
 }
+
+/**
+ * Implementation of hook_rules_defaults().
+ */
+function gizra_access_rules_defaults() {
+  module_load_include('inc', 'gizra_access', 'gizra_access.defaults');
+  $args = func_get_args();
+  return call_user_func_array('_gizra_access_rules_defaults', $args);
+}
