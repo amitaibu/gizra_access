@@ -1,0 +1,38 @@
+<?php
+
+/**
+ * @file
+ * Example module to show uses for the Flag and Rules modules.
+ */
+
+include_once('gizra_access.features.inc');
+
+
+/**
+ * Implementation of hook_field_access().
+ */
+function gizra_access_field_access($op, $field, $account, $node) {
+  if ($field['field_name'] == 'field_hidden_field' && $op == 'view' && $account->uid != 1) {
+  	// Check the user has a flagging on the content.
+  	$flag = flag_get_flag('show_content');
+  	return $flag->is_flagged($node->nid, $account->uid);
+  }
+}
+
+/**
+ * Add user to the purchasing users field in the product node.
+ *
+ * @param $node
+ *   Product node object.
+ * @param $account
+ *   The user object of the buying user.
+ * @return
+ *   The user IDs that should be written to the field.
+ */
+function _gizra_access_add_purchasing_user($node, $account) {
+  $uids = !empty($node->field_purchasing_users) ? $node->field_purchasing_users : array();
+  // Add the user.
+  $uids[] = array('uid' => $account->uid);
+
+  return $uids;
+}
