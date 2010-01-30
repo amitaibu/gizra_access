@@ -7,7 +7,6 @@
 
 include_once('gizra_access.features.inc');
 
-
 /**
  * Implementation of hook_field_access().
  */
@@ -37,6 +36,12 @@ function _gizra_access_add_purchased_products($product_node, $profile_node) {
   return $nids;
 }
 
+/**
+ * Invoke the "Show content" rule set when product has been purchased.
+ *
+ * @param $order
+ *   The order object.
+ */
 function _gizra_access_invoke_rule_set($order) {
 	$account = user_load($order->uid);
 	// Go over all the products in the order.
