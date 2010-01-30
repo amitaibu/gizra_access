@@ -2,8 +2,8 @@ Copy and paste the folloing code, to download and enable the required modules
 using Drush.
 
 # Download modules.
-drush dl flag rules cck features content_profile ubercart ctools strongarm 
-drush dl context-6.x-3.0-alpha2
+drush dl flag-flag 6.x-2.x-dev rules cck features content_profile ubercart  
+drush dl context-6.x-3.0-alpha2 ctools strongarm
 
 # Enable modules
 drush en flag rules_admin features text nodereference content_permissions 
