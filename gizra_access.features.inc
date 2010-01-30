@@ -44,3 +44,12 @@ function gizra_access_user_default_permissions() {
   $args = func_get_args();
   return call_user_func_array('_gizra_access_user_default_permissions', $args);
 }
+
+/**
+ * Implementation of hook_views_default_views().
+ */
+function gizra_access_views_default_views() {
+  module_load_include('inc', 'gizra_access', 'gizra_access.features.views');
+  $args = func_get_args();
+  return call_user_func_array('_gizra_access_views_default_views', $args);
+}

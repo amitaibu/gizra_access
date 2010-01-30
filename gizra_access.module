@@ -20,7 +20,7 @@ function gizra_access_field_access($op, $field, $account, $node) {
 }
 
 /**
- * Add purchased purchasing to user's content profile.
+ * Add purchased products to user's content profile.
  *
  * @param $product_node
  *   Product node object.
@@ -35,4 +35,13 @@ function _gizra_access_add_purchased_products($product_node, $profile_node) {
   $nids[] = array('nid' => $product_node->nid);
 
   return $nids;
+}
+
+function _gizra_access_invoke_rule_set($order) {
+	$account = user_load($order->uid);
+	// Go over all the products in the order.
+	foreach ($order->products as $product) {
+		$node = node_load($product->nid);
+    rules_invoke_rule_set('rules_show_content', $node, $account);
+	}
 }
