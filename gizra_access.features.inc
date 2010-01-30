@@ -64,6 +64,15 @@ function gizra_access_user_default_permissions() {
 }
 
 /**
+ * Implementation of hook_strongarm().
+ */
+function gizra_access_strongarm() {
+  module_load_include('inc', 'gizra_access', 'gizra_access.defaults');
+  $args = func_get_args();
+  return call_user_func_array('_gizra_access_strongarm', $args);
+}
+
+/**
  * Implementation of hook_views_default_views().
  */
 function gizra_access_views_default_views() {

@@ -168,6 +168,9 @@ function _gizra_access_ctools_plugin_api() {
   if ($module == "context" && $api == "context") {
     return array("version" => 3);
   }
+  else if ($module == "system" && $api == "strongarm") {
+    return array("version" => 1);
+  }
 }
 
 /**
@@ -420,4 +423,19 @@ function _gizra_access_user_default_permissions() {
   );
 
   return $permissions;
+}
+
+/**
+ * Helper to implementation of hook_strongarm().
+ */
+function _gizra_access_strongarm() {
+  $export = array();
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'content_profile_use_profile';
+  $strongarm->value = 1;
+
+  $export['content_profile_use_profile'] = $strongarm;
+  return $export;
 }
