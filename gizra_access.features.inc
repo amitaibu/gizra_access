@@ -35,3 +35,12 @@ function gizra_access_rules_defaults() {
   $args = func_get_args();
   return call_user_func_array('_gizra_access_rules_defaults', $args);
 }
+
+/**
+ * Implementation of hook_user_default_permissions().
+ */
+function gizra_access_user_default_permissions() {
+  module_load_include('inc', 'gizra_access', 'gizra_access.defaults');
+  $args = func_get_args();
+  return call_user_func_array('_gizra_access_user_default_permissions', $args);
+}

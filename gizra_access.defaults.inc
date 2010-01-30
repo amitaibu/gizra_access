@@ -338,3 +338,36 @@ function _gizra_access_rules_defaults() {
     ),
   );
 }
+
+/**
+ * Helper to implementation of hook_user_default_permissions().
+ */
+function _gizra_access_user_default_permissions() {
+  $permissions = array();
+
+  // Exported permission: create profile content
+  $permissions[] = array(
+    'name' => 'create profile content',
+    'roles' => array(
+      '0' => 'authenticated user',
+    ),
+  );
+
+  // Exported permission: edit own profile content
+  $permissions[] = array(
+    'name' => 'edit own profile content',
+    'roles' => array(
+      '0' => 'authenticated user',
+    ),
+  );
+
+  // Exported permission: view field_hidden_field
+  $permissions[] = array(
+    'name' => 'view field_hidden_field',
+    'roles' => array(
+      '0' => 'authenticated user',
+    ),
+  );
+
+  return $permissions;
+}
