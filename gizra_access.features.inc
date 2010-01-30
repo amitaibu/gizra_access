@@ -10,6 +10,24 @@ function gizra_access_content_default_fields() {
 }
 
 /**
+ * Implementation of hook_context_default_contexts().
+ */
+function gizra_access_context_default_contexts() {
+  module_load_include('inc', 'gizra_access', 'gizra_access.defaults');
+  $args = func_get_args();
+  return call_user_func_array('_gizra_access_context_default_contexts', $args);
+}
+
+/**
+ * Implementation of hook_ctools_plugin_api().
+ */
+function gizra_access_ctools_plugin_api() {
+  module_load_include('inc', 'gizra_access', 'gizra_access.defaults');
+  $args = func_get_args();
+  return call_user_func_array('_gizra_access_ctools_plugin_api', $args);
+}
+
+/**
  * Implementation of hook_flag_default_flags().
  */
 function gizra_access_flag_default_flags() {

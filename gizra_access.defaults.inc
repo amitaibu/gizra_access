@@ -121,6 +121,56 @@ function _gizra_access_content_default_fields() {
 }
 
 /**
+ * Helper to implementation of hook_context_default_contexts().
+ */
+function _gizra_access_context_default_contexts() {
+  $export = array();
+  $context = new stdClass;
+  $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
+  $context->api_version = 3;
+  $context->name = 'purchasing_users';
+  $context->description = 'Show purchasing users on product content view.';
+  $context->tag = 'gizra_access';
+  $context->conditions = array(
+    'node' => array(
+      'values' => array(
+        'product' => 'product',
+      ),
+      'options' => array(
+        'node_form' => 0,
+      ),
+    ),
+  );
+  $context->reactions = array(
+    'block' => array(
+      'blocks' => array(
+        'views-purchasing_users-block_1' => array(
+          'module' => 'views',
+          'delta' => 'purchasing_users-block_1',
+          'region' => 'right',
+          'weight' => 0,
+        ),
+      ),
+    ),
+  );
+
+  $export['purchasing_users'] = $context;
+  return $export;
+}
+
+/**
+ * Helper to implementation of hook_ctools_plugin_api().
+ */
+function _gizra_access_ctools_plugin_api() {
+  $args = func_get_args();
+  $module = array_shift($args);
+  $api = array_shift($args);
+  if ($module == "context" && $api == "context") {
+    return array("version" => 3);
+  }
+}
+
+/**
  * Helper to implementation of hook_flag_default_flags().
  */
 function _gizra_access_flag_default_flags() {
