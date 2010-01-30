@@ -19,6 +19,15 @@ function gizra_access_flag_default_flags() {
 }
 
 /**
+ * Implementation of hook_node_info().
+ */
+function gizra_access_node_info() {
+  module_load_include('inc', 'gizra_access', 'gizra_access.features.node');
+  $args = func_get_args();
+  return call_user_func_array('_gizra_access_node_info', $args);
+}
+
+/**
  * Implementation of hook_rules_defaults().
  */
 function gizra_access_rules_defaults() {

@@ -53,10 +53,10 @@ function _gizra_access_content_default_fields() {
     ),
   );
 
-  // Exported field: field_purchasing_users
+  // Exported field: field_purchased_products
   $fields[] = array(
-    'field_name' => 'field_purchasing_users',
-    'type_name' => 'product',
+    'field_name' => 'field_purchased_products',
+    'type_name' => 'profile',
     'display_settings' => array(
       'label' => array(
         'format' => 'above',
@@ -80,40 +80,41 @@ function _gizra_access_content_default_fields() {
       ),
     ),
     'widget_active' => '1',
-    'type' => 'userreference',
+    'type' => 'nodereference',
     'required' => '0',
-    'multiple' => '10',
-    'module' => 'userreference',
+    'multiple' => '1',
+    'module' => 'nodereference',
     'active' => '1',
-    'referenceable_roles' => array(
-      '2' => 2,
+    'referenceable_types' => array(
+      'product' => 'product',
+      'page' => 0,
+      'profile' => 0,
+      'story' => 0,
     ),
-    'referenceable_status' => '',
-    'advanced_view' => '',
+    'advanced_view' => '--',
     'advanced_view_args' => '',
     'widget' => array(
       'autocomplete_match' => 'contains',
       'size' => '60',
-      'reverse_link' => 0,
       'default_value' => array(
         '0' => array(
-          'uid' => NULL,
-          '_error_element' => 'default_value_widget][field_purchasing_users][0][uid][uid',
+          'nid' => NULL,
+          '_error_element' => 'default_value_widget][field_purchased_products][0][nid][nid',
         ),
       ),
       'default_value_php' => NULL,
-      'label' => 'Purchasing users',
-      'weight' => '32',
-      'description' => 'Show all the users that purchased the product.',
-      'type' => 'userreference_autocomplete',
-      'module' => 'userreference',
+      'label' => 'Purchased products',
+      'weight' => '31',
+      'description' => '',
+      'type' => 'nodereference_autocomplete',
+      'module' => 'nodereference',
     ),
   );
 
   // Translatables
   array(
     t('Hidden field'),
-    t('Purchasing users'),
+    t('Purchased products'),
   );
 
   return $fields;
@@ -191,6 +192,83 @@ function _gizra_access_rules_defaults() {
       ),
     ),
     'rules' => array(
+      'gizra_access_2' => array(
+        '#type' => 'rule',
+        '#set' => 'rules_show_content',
+        '#label' => 'Add purchased user',
+        '#active' => 1,
+        '#weight' => '0',
+        '#categories' => array(
+          'gizra_access' => 'gizra_access',
+        ),
+        '#status' => 'default',
+        '#conditions' => array(),
+        '#actions' => array(
+          '0' => array(
+            '#type' => 'action',
+            '#settings' => array(
+              'type' => 'profile',
+              '#argument map' => array(
+                'user' => 'account',
+                'profile_node' => 'profile_node',
+              ),
+            ),
+            '#name' => 'content_profile_action_load',
+            '#info' => array(
+              'label' => 'Load Purchasing account\'s Profile',
+              'arguments' => array(
+                'user' => array(
+                  'type' => 'user',
+                  'label' => 'User, whose profile should be loaded',
+                ),
+              ),
+              'new variables' => array(
+                'profile_node' => array(
+                  'type' => 'node',
+                  'label' => 'Content Profile',
+                ),
+              ),
+              'module' => 'Content Profile',
+            ),
+            '#weight' => 0,
+          ),
+          '1' => array(
+            '#weight' => 0,
+            '#info' => array(
+              'label' => 'Populate Content Profile\'s field \'field_purchased_products\'',
+              'arguments' => array(
+                'node' => array(
+                  'type' => 'node',
+                  'label' => 'Content',
+                ),
+              ),
+              'eval input' => array(
+                '0' => 'code',
+              ),
+              'module' => 'CCK',
+            ),
+            '#name' => 'content_rules_action_populate_field',
+            '#settings' => array(
+              'field_name' => 'field_purchased_products',
+              '#argument map' => array(
+                'node' => 'profile_node',
+              ),
+              'value' => array(
+                '0' => array(
+                  'nid' => NULL,
+                ),
+              ),
+              'code' => 'return _gizra_access_add_purchased_products($node, $profile_node);',
+              'vars' => array(
+                '0' => 'profile_node',
+                '1' => 'node',
+              ),
+            ),
+            '#type' => 'action',
+          ),
+        ),
+        '#version' => 6003,
+      ),
       'gizra_access_1' => array(
         '#type' => 'rule',
         '#set' => 'rules_show_content',
@@ -251,55 +329,6 @@ function _gizra_access_rules_defaults() {
             '#settings' => array(
               'message' => 'You can now see hidden fields.',
               'error' => 0,
-            ),
-            '#type' => 'action',
-          ),
-        ),
-        '#version' => 6003,
-      ),
-      'gizra_access_2' => array(
-        '#type' => 'rule',
-        '#set' => 'rules_show_content',
-        '#label' => 'Add purchased user',
-        '#active' => 1,
-        '#weight' => '0',
-        '#categories' => array(
-          'gizra_access' => 'gizra_access',
-        ),
-        '#status' => 'default',
-        '#conditions' => array(),
-        '#actions' => array(
-          '0' => array(
-            '#weight' => 0,
-            '#info' => array(
-              'label' => 'Populate Product content\'s field \'field_purchasing_users\'',
-              'arguments' => array(
-                'node' => array(
-                  'type' => 'node',
-                  'label' => 'Content',
-                ),
-              ),
-              'eval input' => array(
-                '0' => 'code',
-              ),
-              'module' => 'CCK',
-            ),
-            '#name' => 'content_rules_action_populate_field',
-            '#settings' => array(
-              'field_name' => 'field_purchasing_users',
-              '#argument map' => array(
-                'node' => 'node',
-              ),
-              'value' => array(
-                '0' => array(
-                  'uid' => NULL,
-                ),
-              ),
-              'code' => 'return _gizra_access_add_purchasing_user($node, $account);',
-              'vars' => array(
-                '0' => 'node',
-                '1' => 'account',
-              ),
             ),
             '#type' => 'action',
           ),

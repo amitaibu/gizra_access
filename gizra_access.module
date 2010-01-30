@@ -20,19 +20,19 @@ function gizra_access_field_access($op, $field, $account, $node) {
 }
 
 /**
- * Add user to the purchasing users field in the product node.
+ * Add purchased purchasing to user's content profile.
  *
- * @param $node
+ * @param $product_node
  *   Product node object.
- * @param $account
+ * @param $profile_node
  *   The user object of the buying user.
  * @return
- *   The user IDs that should be written to the field.
+ *   The node IDs that should be written to the field.
  */
-function _gizra_access_add_purchasing_user($node, $account) {
-  $uids = !empty($node->field_purchasing_users) ? $node->field_purchasing_users : array();
+function _gizra_access_add_purchased_products($product_node, $profile_node) {
+  $nids = !empty($profile_node->field_purchased_products) ? $profile_node->field_purchased_products : array();
   // Add the user.
-  $uids[] = array('uid' => $account->uid);
+  $nids[] = array('nid' => $product_node->nid);
 
-  return $uids;
+  return $nids;
 }
