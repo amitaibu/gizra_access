@@ -8,6 +8,75 @@
 include_once('gizra_access.features.inc');
 
 /**
+ * Implementation of hook_ca_predicate().
+ *
+ * Use @code print var_export(ca_load_predicate(1)); @endcode
+ * to export an existing predicate.
+ */
+function gizra_access_ca_predicate() {
+  $predicates = array();
+
+  $predicates['show_content'] = array(
+	  '#title' => 'Show content and log purchase',
+	  '#description' => '',
+	  '#class' => '',
+	  '#status' => '1',
+	  '#weight' => '0',
+	  '#uid' => '0',
+	  '#trigger' => 'uc_order_status_update',
+	  '#conditions' =>
+	  array (
+	    '#operator' => 'AND',
+	    '#conditions' =>
+	    array (
+	      0 =>
+	      array (
+	        '#operator' => 'AND',
+	        '#conditions' =>
+	        array (
+	          0 =>
+	          array (
+	            '#name' => 'uc_order_status_condition',
+	            '#title' => 'Check the order status',
+	            '#argument_map' =>
+	            array (
+	              'order' => 'updated_order',
+	            ),
+	            '#settings' =>
+	            array (
+	              'negate' => 0,
+	              'order_status' => 'payment_received',
+	            ),
+	          ),
+	        ),
+	      ),
+	    ),
+	  ),
+	  '#actions' =>
+	  array (
+	    0 =>
+	    array (
+	      '#name' => 'ca_action_custom_php',
+	      '#title' => 'Execute custom PHP code',
+	      '#argument_map' =>
+	      array (
+	        'arguments' => 'arguments',
+	      ),
+	      '#settings' =>
+	      array (
+	        'php' => '_gizra_access_invoke_rule_set($updated_order);',
+	      ),
+	    ),
+	  ),
+
+  );
+
+  return $predicates;
+}
+
+
+
+/**
  * Implementation of hook_field_access().
  */
 function gizra_access_field_access($op, $field, $account, $node) {
