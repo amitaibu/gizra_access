@@ -17,57 +17,57 @@ function gizra_access_ca_predicate() {
   $predicates = array();
 
   $predicates['show_content'] = array(
-	  '#title' => 'Show content and log purchase',
-	  '#description' => '',
-	  '#class' => '',
-	  '#status' => '1',
-	  '#weight' => '0',
-	  '#uid' => '0',
-	  '#trigger' => 'uc_order_status_update',
-	  '#conditions' =>
-	  array (
-	    '#operator' => 'AND',
-	    '#conditions' =>
-	    array (
-	      0 =>
-	      array (
-	        '#operator' => 'AND',
-	        '#conditions' =>
-	        array (
-	          0 =>
-	          array (
-	            '#name' => 'uc_order_status_condition',
-	            '#title' => 'Check the order status',
-	            '#argument_map' =>
-	            array (
-	              'order' => 'updated_order',
-	            ),
-	            '#settings' =>
-	            array (
-	              'negate' => 0,
-	              'order_status' => 'payment_received',
-	            ),
-	          ),
-	        ),
-	      ),
-	    ),
-	  ),
-	  '#actions' =>
-	  array (
-	    0 =>
-	    array (
-	      '#name' => 'ca_action_custom_php',
-	      '#title' => 'Execute custom PHP code',
-	      '#argument_map' =>
-	      array (
-	        'arguments' => 'arguments',
-	      ),
-	      '#settings' =>
-	      array (
-	        'php' => '_gizra_access_invoke_rule_set($updated_order);',
-	      ),
-	    ),
-	  ),
+    '#title' => 'Show content and log purchase',
+    '#description' => '',
+    '#class' => '',
+    '#status' => '1',
+    '#weight' => '0',
+    '#uid' => '0',
+    '#trigger' => 'uc_order_status_update',
+    '#conditions' =>
+    array (
+      '#operator' => 'AND',
+      '#conditions' =>
+      array (
+        0 =>
+        array (
+          '#operator' => 'AND',
+          '#conditions' =>
+          array (
+            0 =>
+            array (
+              '#name' => 'uc_order_status_condition',
+              '#title' => 'Check the order status',
+              '#argument_map' =>
+              array (
+                'order' => 'updated_order',
+              ),
+              '#settings' =>
+              array (
+                'negate' => 0,
+                'order_status' => 'payment_received',
+              ),
+            ),
+          ),
+        ),
+      ),
+    ),
+    '#actions' =>
+    array (
+      0 =>
+      array (
+        '#name' => 'ca_action_custom_php',
+        '#title' => 'Execute custom PHP code',
+        '#argument_map' =>
+        array (
+          'arguments' => 'arguments',
+        ),
+        '#settings' =>
+        array (
+          'php' => '_gizra_access_invoke_rule_set($updated_order);',
+        ),
+      ),
+    ),
 
   );
 
@@ -75,15 +75,14 @@ function gizra_access_ca_predicate() {
 }
 
 
-
 /**
  * Implementation of hook_field_access().
  */
 function gizra_access_field_access($op, $field, $account, $node) {
   if ($field['field_name'] == 'field_hidden_field' && $op == 'view' && $account->uid != 1) {
-  	// Check the user has a flagging on the content.
-  	$flag = flag_get_flag('show_content');
-  	return $flag->is_flagged($node->nid, $account->uid);
+    // Check the user has a flagging on the content.
+    $flag = flag_get_flag('show_content');
+    return $flag->is_flagged($node->nid, $account->uid);
   }
 }
 
@@ -112,10 +111,10 @@ function _gizra_access_add_purchased_products($product_node, $profile_node) {
  *   The order object.
  */
 function _gizra_access_invoke_rule_set($order) {
-	$account = user_load($order->uid);
-	// Go over all the products in the order.
-	foreach ($order->products as $product) {
-		$node = node_load($product->nid);
+  $account = user_load($order->uid);
+  // Go over all the products in the order.
+  foreach ($order->products as $product) {
+    $node = node_load($product->nid);
     rules_invoke_rule_set('rules_show_content', $node, $account);
-	}
+  }
 }
